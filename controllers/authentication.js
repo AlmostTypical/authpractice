@@ -4,6 +4,11 @@ const User = require('../models/users');
 const jwt = require('jwt-simple');
 const secret = require('../config').SECRET;
 
+const signin = function (req, res, next) {
+  res.json({
+    token: tokenGen(req.user) // User is added to req in passport.js
+  })
+};
 
 const signup = function (req, res, next) {
   const email = req.body.email;
@@ -43,5 +48,5 @@ function tokenGen(user) {
 }
 
 module.exports = {
-  signup
+  signup, signin
 };
