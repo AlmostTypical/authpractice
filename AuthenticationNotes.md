@@ -25,3 +25,6 @@ Create a config file to store elements that your server will need to function (p
 const { PORT } = require('./config')
 const port = process.env.PORT || PORT
 Either use the port assigned by the server environment, or the port we have defined.
+
+Storing plaintext passwords is a hilariously big no-no. Instead, salt the password and hash it. Then you compare the hashed
+passwords to see if the password entered matches the one in the database.

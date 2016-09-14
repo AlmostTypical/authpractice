@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const User = require('../models/users');
 
+
 const signup = function (req, res, next) {
   const email = req.body.email;
   const password = req.body.password;
@@ -10,13 +11,21 @@ const signup = function (req, res, next) {
       error: 'You must provide email and password.'
     })
   }
-  const newUser = new User ({email, password});
-  newUser.save(function (err) {
-    if (err) {
-      return next(err);
+  User.findOne({email: email}, function (err, existingUser) {
+    if (err) { return next(err); }
+    if (existingUser) {
+      return res.json(422, {
+        error: 'This email is already being used.'
+      });
     }
-    res.json({
-      success: true
+    const newUser = new User ({email, password});
+    newUser.save(function (err) {
+      if (err) {
+        return next(err);
+      }
+      res.json({
+        success: true
+      });
     });
   });
 };
